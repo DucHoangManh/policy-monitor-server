@@ -29,6 +29,19 @@ public class ControllerResourcesServices {
         ).collect(Collectors.toList());
     }
     public static List<Deployment> listDeploymentDefaultNs(){
-        return client.apps().deployments().inNamespace("default").list().getItems();
+        return client
+                .apps()
+                .deployments()
+                .inNamespace("default")
+                .list()
+                .getItems();
+    }
+    public static List<Deployment> listDeploymentWithinNamespace(String ns){
+        return client
+                .apps()
+                .deployments()
+                .inNamespace(ns)
+                .list()
+                .getItems();
     }
 }

@@ -12,13 +12,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 @Service
-public class PodServices {
-    private static final KubernetesClient client = new DefaultKubernetesClient();
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+public class PodServices implements K8sClientUser{
     public static List<Pod> listPodsDefaultNs(){
         return client
                 .pods()
                 .inNamespace("default")
+                .list()
+                .getItems();
+    }
+    public static List<Pod> listPodsWithinNamespace(String namespace){
+        return client
+                .pods()
+                .inNamespace(namespace)
                 .list()
                 .getItems();
     }

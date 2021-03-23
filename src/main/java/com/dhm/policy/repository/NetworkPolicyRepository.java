@@ -1,7 +1,10 @@
 package com.dhm.policy.repository;
 
-import com.dhm.policy.domain.NetworkPolicy;
+import com.dhm.policy.domain.VersionedNetworkPolicy;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface NetworkPolicyRepository extends MongoRepository<NetworkPolicy, String> {
+import java.util.List;
+
+public interface NetworkPolicyRepository extends MongoRepository<VersionedNetworkPolicy, String> {
+    List<VersionedNetworkPolicy> findAll();
 }

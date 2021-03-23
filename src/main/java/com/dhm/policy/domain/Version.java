@@ -2,12 +2,12 @@ package com.dhm.policy.domain;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Document(collection = "version")
 public class Version {
-    @MongoId
-    private String Id;
+    @Id
+    private String id;
+    private long seq;
     private String content;
     private boolean latest;
 
@@ -17,7 +17,7 @@ public class Version {
     }
 
     public String getId() {
-        return Id;
+        return id;
     }
 
     public String getContent() {

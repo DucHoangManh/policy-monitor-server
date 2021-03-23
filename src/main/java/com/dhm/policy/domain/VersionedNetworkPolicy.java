@@ -2,12 +2,12 @@ package com.dhm.policy.domain;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
+
 
 @Document(collection = "policy")
 public class VersionedNetworkPolicy {
-    @MongoId
-    private String Id;
+    @Id
+    private String id;
     private Version version;
     private io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicy networkPolicy;
 
@@ -17,7 +17,7 @@ public class VersionedNetworkPolicy {
     }
 
     public String getId() {
-        return Id;
+        return id;
     }
 
     public Version getVersion() {

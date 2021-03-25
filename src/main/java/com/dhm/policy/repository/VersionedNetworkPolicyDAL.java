@@ -5,4 +5,5 @@ import java.util.List;
 
 public interface VersionedNetworkPolicyDAL {
     List<VersionedNetworkPolicy> getLatestNetworkPolicy();
+    void removeLatestVersion();
 }

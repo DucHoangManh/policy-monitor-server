@@ -33,6 +33,10 @@ public class NetworkPolicyServices implements K8sClientUser {
         return networkPolicyRepository
                 .findById(id);
     }
+
+    public void removeLatestVersionedNetworkPolicy(){
+        versionedNetworkPolicyRepository.removeLatestVersion();
+    }
     @Autowired
     public NetworkPolicyServices(
             VersionedNetworkPolicyDALImpl versionedNetworkPolicyDALImpl

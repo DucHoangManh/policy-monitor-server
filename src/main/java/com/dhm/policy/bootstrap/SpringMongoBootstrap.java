@@ -3,6 +3,7 @@ package com.dhm.policy.bootstrap;
 import com.dhm.policy.domain.Version;
 import com.dhm.policy.domain.VersionedNetworkPolicy;
 import com.dhm.policy.k8s.K8sClientUser;
+import com.dhm.policy.k8s.NetworkPolicyServices;
 import com.dhm.policy.repository.NetworkPolicyRepository;
 import com.dhm.policy.repository.VersionDAL;
 import com.dhm.policy.repository.VersionDALImpl;
@@ -20,6 +21,7 @@ public class SpringMongoBootstrap implements ApplicationListener<ContextRefreshe
     private NetworkPolicyRepository networkPolicyRepository;
     private VersionRepository versionRepository;
     private VersionDALImpl versionDALImpl;
+    private NetworkPolicyServices networkPolicyServices;
     private final Logger logger = LoggerFactory.getLogger(SpringMongoBootstrap.class);
 
     @Autowired
@@ -44,9 +46,17 @@ public class SpringMongoBootstrap implements ApplicationListener<ContextRefreshe
 
     @Transactional
     public void fetchNetworkPolicy(){
+        Version latestVersion = versionDALImpl.getLatest();
+        Version version;
+        if(latestVersion==null){
+            logger.info("fetch the first version");
+            version = new Version("Init version use for test", true);
+            versionRepository.save(version);
+        }else{
+            networkPolicyServices.removeLatestVersionedNetworkPolicy();
+            version = latestVersion;
+        }
         logger.info("fetch network policies in cluster");
-        Version version = new Version("Init version use for test", true);
-        versionRepository.save(version);
         client
                 .network()
                 .networkPolicies()
@@ -61,4 +71,8 @@ public class SpringMongoBootstrap implements ApplicationListener<ContextRefreshe
                 );
     }
 
+    @Autowired
+    public void setNetworkPolicyServices(NetworkPolicyServices networkPolicyServices){
+        this.networkPolicyServices = networkPolicyServices;
+    }
 }

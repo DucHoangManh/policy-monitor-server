@@ -7,7 +7,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Version {
     @Id
     private String id;
-    private long seq;
     private String content;
     private boolean latest;
 

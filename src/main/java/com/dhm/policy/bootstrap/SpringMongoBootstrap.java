@@ -5,8 +5,7 @@ import com.dhm.policy.domain.VersionedNetworkPolicy;
 import com.dhm.policy.k8s.K8sClientUser;
 import com.dhm.policy.k8s.NetworkPolicyServices;
 import com.dhm.policy.repository.NetworkPolicyRepository;
-import com.dhm.policy.repository.VersionDAL;
-import com.dhm.policy.repository.VersionDALImpl;
+import com.dhm.policy.repository.impl.VersionDALImpl;
 import com.dhm.policy.repository.VersionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +49,7 @@ public class SpringMongoBootstrap implements ApplicationListener<ContextRefreshe
         Version version;
         if(latestVersion==null){
             logger.info("fetch the first version");
-            version = new Version("Init version use for test", true);
+            version = new Version("Init version", true);
             versionRepository.save(version);
         }else{
             networkPolicyServices.removeLatestVersionedNetworkPolicy();

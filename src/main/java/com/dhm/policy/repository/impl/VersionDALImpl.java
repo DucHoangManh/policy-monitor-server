@@ -1,6 +1,7 @@
-package com.dhm.policy.repository;
+package com.dhm.policy.repository.impl;
 
 import com.dhm.policy.domain.Version;
+import com.dhm.policy.repository.VersionDAL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 @Repository
-public class VersionDALImpl implements VersionDAL{
+public class VersionDALImpl implements VersionDAL {
     private final MongoTemplate mongoTemplate;
     @Override
     public List<Version> getAll() {

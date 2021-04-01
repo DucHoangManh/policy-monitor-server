@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/policy")
 public class NetworkPolicyController {
     private final NetworkPolicyServices networkPolicyServices;
-    @RequestMapping("/policy")
+    @RequestMapping("/")
     public List<VersionedNetworkPolicy> listAllVersionedPolicy(
             @RequestParam(value = "latest",required = false) boolean latest){
         if (!latest) {
@@ -20,11 +21,21 @@ public class NetworkPolicyController {
         }
     }
 
-    @RequestMapping(value = "/policy/{policyId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{policyId}", method = RequestMethod.GET)
     public VersionedNetworkPolicy findVersionedNetworkPolicyById(@PathVariable String policyId){
         return networkPolicyServices
                 .findById(policyId)
                 .orElse(null);
+    }
+
+    @RequestMapping(value = "/{policyId}", method = RequestMethod.DELETE)
+    public VersionedNetworkPolicy deleteNetworkPolicyById(@PathVariable String policyId){
+        return networkPolicyServices.deleteById(policyId);
+    }
+
+    @RequestMapping(value = "/by_name/{name}", method = RequestMethod.DELETE)
+    public VersionedNetworkPolicy deleteNetworkPolicyByName(@PathVariable String name){
+        return networkPolicyServices.deleteByName(name);
     }
 
 

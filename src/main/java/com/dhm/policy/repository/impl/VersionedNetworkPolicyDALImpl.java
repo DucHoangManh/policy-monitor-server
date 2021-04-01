@@ -30,6 +30,13 @@ public class VersionedNetworkPolicyDALImpl implements VersionedNetworkPolicyDAL 
     }
 
     @Override
+    public VersionedNetworkPolicy findByName(String name) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("networkPolicy.metadata.name").is(name));
+        return mongoTemplate.findOne(query,VersionedNetworkPolicy.class);
+    }
+
+    @Override
     public void removeLatestVersion() {
         try{
             Query query = new Query();

@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface VersionDAL {
     List<Version> getAll();
     Version getLatest();
+    void removeLatest();
 }

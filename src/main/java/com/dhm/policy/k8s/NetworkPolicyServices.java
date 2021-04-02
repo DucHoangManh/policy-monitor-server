@@ -15,7 +15,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import sun.misc.IOUtils;
+import sun.nio.ch.IOUtil;
 
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -45,6 +49,18 @@ public class NetworkPolicyServices implements K8sClientUser {
         return networkPolicyRepository
                 .findById(id);
     }
+
+    public void createNew(String newPolicy, String namespace){
+        NetworkPolicy netPolicy = client
+                .network()
+                .v1().networkPolicies()
+                .inNamespace(namespace)
+                .load(new ByteArrayInputStream(newPolicy.getBytes(StandardCharsets.UTF_8)))
+                .createOrReplace();
+        logger.info("new policy created with name: " + netPolicy.getMetadata().getName());
+        fetchNewVersion("new policy " + netPolicy.getMetadata().getName());
+    }
+
     @Transactional
     public VersionedNetworkPolicy deleteByName(String name){
         VersionedNetworkPolicy removedPolicy= versionedNetworkPolicyRepository.findByName(name);
@@ -65,6 +81,7 @@ public class NetworkPolicyServices implements K8sClientUser {
     @Transactional
     public void fetchNewVersion(String content){
         versionDAL.removeLatest();
+        versionedNetworkPolicyRepository.removeLatest();
         Version newVersion = new Version(content,true);
         versionRepository.save(newVersion);
         logger.info("fetch the new policies after update");

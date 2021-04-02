@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/policy")
+@RequestMapping("/{namespace}/policy")
 public class NetworkPolicyController {
     private final NetworkPolicyServices networkPolicyServices;
     @RequestMapping("/")
@@ -19,6 +19,11 @@ public class NetworkPolicyController {
         }else{
             return networkPolicyServices.getLatestVersionedPolicy();
         }
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    public void createNewPolicy(@RequestBody String body, @PathVariable String namespace){
+        networkPolicyServices.createNew(body,namespace);
     }
 
     @RequestMapping(value = "/{policyId}", method = RequestMethod.GET)

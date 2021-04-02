@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -42,6 +43,19 @@ public class VersionedNetworkPolicyDALImpl implements VersionedNetworkPolicyDAL 
             Query query = new Query();
             query.addCriteria(Criteria.where("version.latest").is(true));
             mongoTemplate.remove(query, VersionedNetworkPolicy.class);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void removeLatest() {
+        try{
+            Query query = new Query();
+            query.addCriteria(Criteria.where("version.latest").is(true));
+            Update update = new Update();
+            update.set("version.latest",false);
+            mongoTemplate.updateMulti(query,update,VersionedNetworkPolicy.class);
         }catch (Exception e){
             e.printStackTrace();
         }

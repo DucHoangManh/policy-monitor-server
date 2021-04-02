@@ -7,6 +7,7 @@ import java.util.List;
 public interface VersionedNetworkPolicyDAL {
     List<VersionedNetworkPolicy> getLatestNetworkPolicy();
     void removeLatestVersion();
+    void removeLatest();
     VersionedNetworkPolicy removeByName(String name);
     VersionedNetworkPolicy findByName(String name);
     VersionedNetworkPolicy removeById(String Id);

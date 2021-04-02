@@ -26,6 +26,11 @@ public class NetworkPolicyController {
         networkPolicyServices.createNew(body,namespace);
     }
 
+    @RequestMapping(value = "/", method = RequestMethod.PATCH)
+    public void updateExistedPolicy(@RequestBody String body, @PathVariable String namespace){
+        networkPolicyServices.update(body,namespace);
+    }
+
     @RequestMapping(value = "/{policyId}", method = RequestMethod.GET)
     public VersionedNetworkPolicy findVersionedNetworkPolicyById(@PathVariable String policyId){
         return networkPolicyServices

@@ -58,7 +58,18 @@ public class NetworkPolicyServices implements K8sClientUser {
                 .load(new ByteArrayInputStream(newPolicy.getBytes(StandardCharsets.UTF_8)))
                 .createOrReplace();
         logger.info("new policy created with name: " + netPolicy.getMetadata().getName());
-        fetchNewVersion("new policy " + netPolicy.getMetadata().getName());
+        fetchNewVersion("new policy " + netPolicy.getMetadata().getName() +" created");
+    }
+
+    public void update(String newPolicy, String namespace){
+        NetworkPolicy netPolicy = client
+                .network()
+                .v1().networkPolicies()
+                .inNamespace(namespace)
+                .load(new ByteArrayInputStream(newPolicy.getBytes(StandardCharsets.UTF_8)))
+                .createOrReplace();
+        logger.info("policy with name: " + netPolicy.getMetadata().getName() + " updated");
+        fetchNewVersion("policy " + netPolicy.getMetadata().getName() +" updated");
     }
 
     @Transactional

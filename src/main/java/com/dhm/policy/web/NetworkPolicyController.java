@@ -13,11 +13,12 @@ public class NetworkPolicyController {
     private final NetworkPolicyServices networkPolicyServices;
     @RequestMapping("/")
     public List<VersionedNetworkPolicy> listAllVersionedPolicy(
-            @RequestParam(value = "latest",required = false) boolean latest){
+            @RequestParam(value = "latest",required = false) boolean latest,
+            @PathVariable String namespace){
         if (!latest) {
-            return networkPolicyServices.getAll();
+            return networkPolicyServices.getAllInNs(namespace);
         }else{
-            return networkPolicyServices.getLatestVersionedPolicy();
+            return networkPolicyServices.getLatestVersionedPolicyInNs(namespace);
         }
     }
 

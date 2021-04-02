@@ -18,6 +18,27 @@ import java.util.List;
 public class VersionedNetworkPolicyDALImpl implements VersionedNetworkPolicyDAL {
     private final Logger logger = LoggerFactory.getLogger(SpringMongoBootstrap.class);
     private MongoTemplate mongoTemplate;
+
+    @Override
+    public List<VersionedNetworkPolicy> getAllInNs(String ns) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("networkPolicy.metadata.namespace").is(ns));
+        return mongoTemplate.find(query,VersionedNetworkPolicy.class);
+    }
+
+    @Override
+    public List<VersionedNetworkPolicy> getLatestNetworkPolicyInNs(String ns) {
+        try{
+            Query query = new Query();
+            query.addCriteria(Criteria.where("networkPolicy.metadata.namespace").is(ns));
+            query.addCriteria(Criteria.where("version.latest").is(true));
+            return mongoTemplate.find(query,VersionedNetworkPolicy.class);
+        }catch (Exception e){
+            e.printStackTrace();
+            return getAllInNs(ns);
+        }
+    }
+
     @Override
     public List<VersionedNetworkPolicy> getLatestNetworkPolicy() {
         try{

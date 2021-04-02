@@ -15,8 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import sun.misc.IOUtils;
-import sun.nio.ch.IOUtil;
+
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
@@ -41,9 +40,16 @@ public class NetworkPolicyServices implements K8sClientUser {
         return versionedNetworkPolicyRepository
                 .getLatestNetworkPolicy();
     }
+    public List<VersionedNetworkPolicy> getLatestVersionedPolicyInNs(String ns){
+        return versionedNetworkPolicyRepository
+                .getLatestNetworkPolicyInNs(ns);
+    }
     public List<VersionedNetworkPolicy> getAll(){
         return networkPolicyRepository
                 .findAll();
+    }
+    public List<VersionedNetworkPolicy> getAllInNs(String ns){
+        return versionedNetworkPolicyRepository.getAllInNs(ns);
     }
     public Optional<VersionedNetworkPolicy> findById(String id){
         return networkPolicyRepository

@@ -44,6 +44,10 @@ public class NetworkPolicyServices implements K8sClientUser {
         return versionedNetworkPolicyRepository
                 .getLatestNetworkPolicyInNs(ns);
     }
+    public List<VersionedNetworkPolicy> getSpecificVersionPolicyInNs(String ns, String version){
+        return versionedNetworkPolicyRepository
+                .getSpecificVersionPolicyInNs(ns,version);
+    }
     public List<VersionedNetworkPolicy> getAll(){
         return networkPolicyRepository
                 .findAll();

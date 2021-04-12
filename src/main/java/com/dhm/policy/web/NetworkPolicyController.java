@@ -1,26 +1,39 @@
 package com.dhm.policy.web;
 
+import com.dhm.policy.bootstrap.SpringMongoBootstrap;
+import com.dhm.policy.domain.Version;
 import com.dhm.policy.domain.VersionedNetworkPolicy;
 import com.dhm.policy.k8s.NetworkPolicyServices;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/{namespace}/policy")
 public class NetworkPolicyController {
+    private final Logger logger = LoggerFactory.getLogger(SpringMongoBootstrap.class);
     private final NetworkPolicyServices networkPolicyServices;
     @RequestMapping("/")
     public List<VersionedNetworkPolicy> listAllVersionedPolicy(
-            @RequestParam(value = "latest",required = false) boolean latest,
+            @RequestParam(value = "version", required = false) String version,
             @PathVariable String namespace){
-        if (!latest) {
+
+        if (version != null){
+            if (version.equals("latest")){
+                logger.info(version);
+                return networkPolicyServices.getLatestVersionedPolicyInNs(namespace);
+            }else{
+                logger.info("fault");
+                return networkPolicyServices.getSpecificVersionPolicyInNs(namespace, version);
+            }
+        }else {
             return networkPolicyServices.getAllInNs(namespace);
-        }else{
-            return networkPolicyServices.getLatestVersionedPolicyInNs(namespace);
         }
     }
+
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public void createNewPolicy(@RequestBody String body, @PathVariable String namespace){

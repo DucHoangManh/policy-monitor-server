@@ -8,6 +8,7 @@ public interface VersionedNetworkPolicyDAL {
     List<VersionedNetworkPolicy> getAllInNs(String ns);
     List<VersionedNetworkPolicy> getLatestNetworkPolicy();
     List<VersionedNetworkPolicy> getLatestNetworkPolicyInNs(String ns);
+    List<VersionedNetworkPolicy> getSpecificVersionPolicyInNs(String ns, String version);
     void removeLatestVersion();
     void removeLatest();
     VersionedNetworkPolicy removeByName(String name);

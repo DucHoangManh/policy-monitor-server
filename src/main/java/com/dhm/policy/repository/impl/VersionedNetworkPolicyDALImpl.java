@@ -40,6 +40,19 @@ public class VersionedNetworkPolicyDALImpl implements VersionedNetworkPolicyDAL 
     }
 
     @Override
+    public List<VersionedNetworkPolicy> getSpecificVersionPolicyInNs(String ns, String version) {
+        try{
+            Query query = new Query();
+            query.addCriteria(Criteria.where("networkPolicy.metadata.namespace").is(ns));
+            query.addCriteria(Criteria.where("version.id").is(version));
+            return mongoTemplate.find(query,VersionedNetworkPolicy.class);
+        }catch (Exception e){
+            e.printStackTrace();
+            return getAllInNs(ns);
+        }
+    }
+
+    @Override
     public List<VersionedNetworkPolicy> getLatestNetworkPolicy() {
         try{
             Query query = new Query();

@@ -3,12 +3,13 @@ package com.dhm.policy.web;
 import com.dhm.policy.k8s.NamespaceServices;
 import io.fabric8.kubernetes.api.model.Namespace;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+@CrossOrigin
 @RestController
 public class NamespaceController {
     NamespaceServices namespaceServices;

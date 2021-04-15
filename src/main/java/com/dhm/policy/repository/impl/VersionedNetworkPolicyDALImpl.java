@@ -65,9 +65,23 @@ public class VersionedNetworkPolicyDALImpl implements VersionedNetworkPolicyDAL 
     }
 
     @Override
-    public VersionedNetworkPolicy findByName(String name) {
+    public VersionedNetworkPolicy findByName(String name, String ns, String version) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("networkPolicy.metadata.namespace").is(ns));
+        if (version.equals("latest")){
+            query.addCriteria(Criteria.where("version.latest").is(true));
+        }else{
+            query.addCriteria(Criteria.where("version.id").is(version));
+        }
+        query.addCriteria(Criteria.where("networkPolicy.metadata.name").is(name));
+        return mongoTemplate.findOne(query,VersionedNetworkPolicy.class);
+    }
+
+    @Override
+    public VersionedNetworkPolicy findByNameLatestVersion(String name, String ns) {
         Query query = new Query();
         query.addCriteria(Criteria.where("networkPolicy.metadata.name").is(name));
+        query.addCriteria(Criteria.where("version.latest").is(true));
         return mongoTemplate.findOne(query,VersionedNetworkPolicy.class);
     }
 

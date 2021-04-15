@@ -59,7 +59,7 @@ public class SpringMongoBootstrap implements ApplicationListener<ContextRefreshe
         client
                 .network()
                 .networkPolicies()
-                .inNamespace("default")
+                .inAnyNamespace()
                 .list()
                 .getItems()
                 .forEach(

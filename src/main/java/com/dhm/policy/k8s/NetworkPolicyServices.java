@@ -59,6 +59,10 @@ public class NetworkPolicyServices implements K8sClientUser {
         return networkPolicyRepository
                 .findById(id);
     }
+    public VersionedNetworkPolicy findByName(String name, String ns, String version){
+        return versionedNetworkPolicyRepository
+                .findByName(name, ns, version);
+    }
 
     public void createNew(String newPolicy, String namespace){
         NetworkPolicy netPolicy = client
@@ -83,8 +87,8 @@ public class NetworkPolicyServices implements K8sClientUser {
     }
 
     @Transactional
-    public VersionedNetworkPolicy deleteByName(String name){
-        VersionedNetworkPolicy removedPolicy= versionedNetworkPolicyRepository.findByName(name);
+    public VersionedNetworkPolicy deleteByName(String name, String ns){
+        VersionedNetworkPolicy removedPolicy= versionedNetworkPolicyRepository.findByNameLatestVersion(name, ns);
         if(removedPolicy!=null){
             client
                     .network()
@@ -110,7 +114,7 @@ public class NetworkPolicyServices implements K8sClientUser {
             client
                     .network()
                     .networkPolicies()
-                    .inNamespace("default")
+                    .inAnyNamespace()
                     .list()
                     .getItems()
                     .forEach(

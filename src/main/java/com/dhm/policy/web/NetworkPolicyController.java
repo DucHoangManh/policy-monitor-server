@@ -10,8 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@CrossOrigin
+
 @RestController
+@CrossOrigin
 @RequestMapping("/{namespace}/policy")
 public class NetworkPolicyController {
     private final Logger logger = LoggerFactory.getLogger(SpringMongoBootstrap.class);
@@ -23,10 +24,8 @@ public class NetworkPolicyController {
 
         if (version != null){
             if (version.equals("latest")){
-                logger.info(version);
                 return networkPolicyServices.getLatestVersionedPolicyInNs(namespace);
             }else{
-                logger.info("fault");
                 return networkPolicyServices.getSpecificVersionPolicyInNs(namespace, version);
             }
         }else {
@@ -57,9 +56,17 @@ public class NetworkPolicyController {
         return networkPolicyServices.deleteById(policyId);
     }
 
+    @RequestMapping(value = "/by_name/{name}", method = RequestMethod.GET)
+    public VersionedNetworkPolicy getNetworkPolicyByName(@RequestParam(value = "version", required = true) String version,
+                                                                @PathVariable String namespace,
+                                                               @PathVariable String name)
+    {
+        return networkPolicyServices.findByName(name, namespace, version);
+    }
+
     @RequestMapping(value = "/by_name/{name}", method = RequestMethod.DELETE)
-    public VersionedNetworkPolicy deleteNetworkPolicyByName(@PathVariable String name){
-        return networkPolicyServices.deleteByName(name);
+    public VersionedNetworkPolicy deleteNetworkPolicyByName(@PathVariable String name, @PathVariable String namespace){
+        return networkPolicyServices.deleteByName(name, namespace);
     }
 
 

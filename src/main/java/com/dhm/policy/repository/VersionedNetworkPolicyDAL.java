@@ -12,6 +12,7 @@ public interface VersionedNetworkPolicyDAL {
     void removeLatestVersion();
     void removeLatest();
     VersionedNetworkPolicy removeByName(String name);
-    VersionedNetworkPolicy findByName(String name);
+    VersionedNetworkPolicy findByName(String name, String ns, String version);
+    VersionedNetworkPolicy findByNameLatestVersion(String name, String ns);
     VersionedNetworkPolicy removeById(String Id);
 }

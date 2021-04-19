@@ -94,7 +94,7 @@ public class NetworkPolicyServices implements K8sClientUser {
                     .network()
                     .v1()
                     .networkPolicies()
-                    .inNamespace("default")
+                    .inNamespace(ns)
                     .withName(name)
                     .delete();
             fetchNewVersion("Policy "+ name + " deleted.");
